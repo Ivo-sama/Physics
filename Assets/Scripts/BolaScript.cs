@@ -4,18 +4,35 @@ using UnityEngine;
 
 public class BolaScript : MonoBehaviour
 {
-    public Rigidbody Rig;
+
+    private GameObject bola;
+    public Rigidbody rig;
+    public float speed = 100f;
 
     public void Start()
     {
-        Rig = GetComponent<Rigidbody>();
+        bola = GameObject.Find("Bola");
+        rig = bola.GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
-    public void OnCollisionEnter(Collision coll)
+    public void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject.name != "Plane")
+        {
+            bola.GetComponent<MeshRenderer>().material.color = Color.grey;
+        }
+    }
 
-        GetComponent<MeshRenderer>().material.color = Color.red;
-        Debug.Log("Sai de cima, idiota!");
+    public void Update()
+    {
+        if(Input.GetKey(KeyCode.LeftArrow))
+        {
+            rig.velocity = Vector3.left * speed * Time.deltaTime;
+        }
+
+        if(Input.GetKey(KeyCode.RightArrow))
+        {
+            rig.velocity = Vector3.right * speed * Time.deltaTime;
+        }
     }
 }
